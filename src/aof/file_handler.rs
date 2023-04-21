@@ -1,12 +1,12 @@
 use std::{fs::{OpenOptions, File}, io::{Read, Write}};
 
-struct FileHandler {
-    filepath:  & 'static str,
+#[derive(Debug)]
+pub struct FileHandler {
     file: File
 }
 
 impl FileHandler {
-    fn read_file(&mut self) -> String {
+    pub fn read_file(&mut self) -> String {
         let mut buffer = String::new();
     
         let file_string = self.file.read_to_string(&mut buffer);
@@ -19,19 +19,19 @@ impl FileHandler {
         buffer
     }
 
-    fn append_file(&mut self, buffer: &[u8]) {
+    pub fn append_file(&mut self, buffer: &[u8]) {
         match self.file.write(buffer) {
             Err(err) => panic!("Error writing to AOF: {:?}", err),
             _ => {}
         };
     }
 
-    fn delete_file() {
+    pub fn delete_file() {
         // TODO: implement me
     }
 }
 
-fn init_file_handler(filepath: & 'static str) -> FileHandler {
+pub fn init_file_handler(filepath: & 'static str) -> FileHandler {
 
     let file_handler = OpenOptions::new()
         .append(true)
@@ -46,7 +46,6 @@ fn init_file_handler(filepath: & 'static str) -> FileHandler {
     };
 
     FileHandler { 
-        filepath,
         file
     }
 }
