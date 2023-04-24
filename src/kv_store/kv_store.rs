@@ -27,13 +27,10 @@ impl KeyValueStore {
             value.to_owned()
         );
 
-        match tracking {
-            Some(true) => {
-                self.aof.append_file(
-                    format!("^set|{}|{}", key, value).as_bytes()
-                );
-            }
-            _ => {}
+        if let Some(true) = tracking {
+            self.aof.append_file(
+                format!("^set|{}|{}", key, value).as_bytes()
+            );
         }
 
         result
