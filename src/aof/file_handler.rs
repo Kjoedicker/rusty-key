@@ -9,25 +9,17 @@ impl FileHandler {
     pub fn read_file(&mut self) -> String {
         let mut buffer = String::new();
     
-        let read_result = self.file.read_to_string(&mut buffer);
-
-        match read_result {
-            Ok(file) => file,
-            Err(err) => panic!("[ERROR] reading file{:?}", err)
+        if let Err(error) = self.file.read_to_string(&mut buffer) {
+            panic!("[ERROR] reading AOF: {:?}", error);
         };
 
         buffer
     }
 
     pub fn append_file(&mut self, buffer: &[u8]) {
-        match self.file.write(buffer) {
-            Err(err) => panic!("Error writing to AOF: {:?}", err),
-            _ => {}
+        if let Err(error) = self.file.write(buffer) {
+            panic!("[ERROR] appending to AOF: {:?}", error);
         };
-    }
-
-    pub fn delete_file() {
-        // TODO: implement me
     }
 
     pub fn parse_actions(&mut self) -> Vec<Vec<String>> {
@@ -55,7 +47,7 @@ pub fn init_file_handler(filepath: & 'static str) -> FileHandler {
 
     let file = match file_handler {
         Ok(file) => file,
-        _ => panic!("Error creating file handler for AOF")
+        Err(error) => panic!("[ERROR] creating file handler for AOF: {:?}", error)
     };
 
     FileHandler { 
