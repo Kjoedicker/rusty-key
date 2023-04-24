@@ -1,8 +1,18 @@
+use crate::kv_store::KEY_VALUE_STORE;
+
 use super::routes::*;
 use actix_web::{App, HttpServer};
 
+pub fn start_up_tasks() {
+    let mut store = KEY_VALUE_STORE.lock().unwrap();
+
+    store.process_actions();
+}
+
 #[actix_web::main] // or #[tokio::main]
 pub async fn start_server() -> std::io::Result<()> {
+    start_up_tasks();
+
     HttpServer::new(|| {
         App::new()
             .service(get_key)
