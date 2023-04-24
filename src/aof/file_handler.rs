@@ -9,11 +9,11 @@ impl FileHandler {
     pub fn read_file(&mut self) -> String {
         let mut buffer = String::new();
     
-        let file_string = self.file.read_to_string(&mut buffer);
+        let read_result = self.file.read_to_string(&mut buffer);
 
-        match file_string {
+        match read_result {
             Ok(file) => file,
-            Err(err) => panic!("Error reading file{:?}", err)
+            Err(err) => panic!("[ERROR] reading file{:?}", err)
         };
 
         buffer
@@ -28,6 +28,19 @@ impl FileHandler {
 
     pub fn delete_file() {
         // TODO: implement me
+    }
+
+    pub fn parse_actions(&mut self) -> Vec<Vec<String>> {
+        let file_string = self.read_file();
+    
+        let split_actions: Vec<&str> = file_string.split("^").collect();
+    
+        split_actions
+            .iter()
+            .map( |x| { 
+                let split: Vec<&str> = x.split("|").collect();
+                split.iter().map( |x| {x.to_string()}).collect::<Vec<String>>()
+            }).collect()
     }
 }
 
