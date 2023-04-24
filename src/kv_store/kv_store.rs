@@ -42,4 +42,30 @@ impl KeyValueStore {
     pub fn get(&mut self, key: &str) -> Option<&String> {
         self.store.get(key)
     }
+
+    pub fn delete(&mut self, key: &str) -> Option<String> {
+        self.store.remove(key)
+    }
+
+    pub fn process_actions (&mut self) {
+        let actions = self.aof.parse_actions();
+
+        for action in actions.iter() {
+            let command = action[0].as_str();
+
+            match command {
+                "set" => {
+                    let (key, value) = (&action[1],&action[2]);
+                    println!("Setting key {}", key);
+                    self.set(key.to_string(), value.to_owned(), Some(false));
+                },
+                "delete"=> {
+                    let key = &action[1];
+                    println!("Deleting key {}", key);
+                    self.delete(key);
+                },
+                _ => println!("How did we get here?")
+            }
+        }
+    }
 }
