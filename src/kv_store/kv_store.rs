@@ -21,18 +21,22 @@ pub struct KeyValueStore {
 
 impl KeyValueStore {
 
-    pub fn set (&mut self, key: String, value: String) -> Option<String> {
-        // TODO: take into consideration when a KEY will be overwritten - do we want non-mutable key as a point?
-        match self.store.insert(key.to_owned(), value.to_owned()) {
-            Some(value) => {
-                self.aof.append_file(
-                    format!("^set:{}:{}", key, value).as_bytes()
-                );
+    pub fn set (&mut self, key: String, value: String, tracking: Option<bool>) -> Option<String> {
+        let result = self.store.insert(
+            key.to_owned(), 
+            value.to_owned()
+        );
 
-                Some(value)
-            },
-            None => None
+        match tracking {
+            Some(true) => {
+                self.aof.append_file(
+                    format!("^set|{}|{}", key, value).as_bytes()
+                );
+            }
+            _ => {}
         }
+
+        result
     }
 
     pub fn get(&mut self, key: &str) -> Option<&String> {
