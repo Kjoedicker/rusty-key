@@ -22,7 +22,8 @@ async fn set_key(params: web::Path<(String, String)>) -> impl Responder {
     let mut teller = KEY_VALUE_STORE.lock().unwrap();
 
     match teller.set(key, value, Some(true)) {
-        Some(value) => HttpResponse::Created(),
-        None => HttpResponse::Conflict()
+        // TODO: revisit this when its a little 
+        // more clear when an issue occurs
+        _ => HttpResponse::Created()
     }
 }
