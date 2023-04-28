@@ -8,7 +8,7 @@ pub fn startup_tasks() {
     store.process_actions();
 }
 
-#[actix_web::main] // or #[tokio::main]
+#[actix_web::main]
 pub async fn start_server() -> std::io::Result<()> {
     startup_tasks();
 
@@ -16,6 +16,7 @@ pub async fn start_server() -> std::io::Result<()> {
         App::new()
             .service(get_key)
             .service(set_key)
+            .service(delete_key)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

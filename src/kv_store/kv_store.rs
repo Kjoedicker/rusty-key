@@ -40,8 +40,21 @@ impl KeyValueStore {
         self.store.get(key)
     }
 
-    pub fn delete(&mut self, key: &str) -> Option<String> {
-        self.store.remove(key)
+    pub fn delete(&mut self, key: &str, tracking: Option<bool>) -> Option<String> {
+        
+        match self.store.remove(key) {
+            Some(_) => {
+
+                if let Some(true) = tracking {
+                    self.aof.append_file(
+                        format!("^delete|{}", key).as_bytes()
+                    );
+                }
+
+                Some(key.to_string())
+            }
+            None => None
+        }
     }
 
     pub fn process_actions (&mut self) {
@@ -59,7 +72,7 @@ impl KeyValueStore {
                 "delete"=> {
                     let key = &action[1];
                     println!("Deleting key {}", key);
-                    self.delete(key);
+                    self.delete(key, Some(false));
                 },
                 _ => println!("How did we get here?")
             }
