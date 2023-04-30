@@ -37,7 +37,7 @@ async fn set_key(params: web::Path<String>, payload: web::Json<Payload>) -> impl
     }
 }
 
-#[delete("{key}")]
+#[delete("/{key}")]
 async fn delete_key(params: web::Path<String>) -> impl Responder {
     let key = params.into_inner();
     
