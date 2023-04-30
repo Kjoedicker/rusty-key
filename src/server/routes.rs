@@ -1,5 +1,6 @@
 use crate::kv_store::KEY_VALUE_STORE;
-use actix_web::{get, web, Responder, post, HttpResponse, delete};
+use actix_web::{get, web, Responder, put,  HttpResponse, delete};
+use serde::Deserialize;
 
 #[get("/{key}")]
 async fn get_key(key: web::Path<String>) -> HttpResponse {
@@ -15,11 +16,17 @@ async fn get_key(key: web::Path<String>) -> HttpResponse {
     }
 }
 
-#[post("/{key}/{value}")]
-async fn set_key(params: web::Path<(String, String)>) -> impl Responder {
-    let (key, value) = params.into_inner();
+#[derive(Deserialize, Debug)]
+struct Payload {
+    value: String,
+}
+
+#[put("/{key}")]
+async fn set_key(params: web::Path<String>, payload: web::Json<Payload>) -> impl Responder {
+    let key = params.into_inner();
+    let value = payload.value.to_owned();
     
-    println!("Received SET request Key: {} Value: {}", key, value);
+    println!("Received SET request Key: {} Value: {:?}", key, value);
 
     let mut teller = KEY_VALUE_STORE.lock().unwrap();
 
