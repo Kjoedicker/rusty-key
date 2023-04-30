@@ -8,7 +8,9 @@ async fn get_key(key: web::Path<String>) -> HttpResponse {
     let mut teller = KEY_VALUE_STORE.lock().unwrap(); 
     
     match teller.get(&key) {
-        Some(value) => HttpResponse::Ok().body(value.clone()),
+        Some(value) => {
+            HttpResponse::Ok().json(value)
+        },
         None => HttpResponse::NotFound().body("Key not found")
     }
 }
