@@ -20,6 +20,16 @@
 `rusty-key` leverages `actix_web` for communicating requests to the native underlying  <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html">HashMap</a> that hosts everything. Data is persisted by default with a AOF system that helps keep and rebuild an event log of the data as it populates.
 
 Like a key, this Rust based Key/Value store that aims to be simple and efficient, even if its a little rough around the edges.
+## API
+
+* GET /key
+    * `200` = the associated value
+    * `404` = Key not found
+* PUT /key
+    * `201` = creation
+* DELETE /key
+    * `200` = deletion
+    * `404` = Key not found
 
 ## Usage
 
