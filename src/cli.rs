@@ -5,7 +5,7 @@ use std::io;
 fn capture_command_arguments(input_string: &String) -> Option<Captures> {
     let re = Regex::new(r"(?m)^(?P<command>.+?)\s+(?P<key>.+?)\s+(?P<value>.+?)?$").unwrap();
 
-    let captured_arguments = re.captures(&input_string);
+    let captured_arguments = re.captures(input_string);
 
     captured_arguments
 }
@@ -55,12 +55,16 @@ fn process_captured_arguments(captured_arguments: Captures) {
 pub fn start() {
     println!("Rusty-Key CLI Beta");
 
-    let mut input_string = String::new();
-
-    while input_string.trim() != "exit" {
-        input_string.clear();
+    loop {
+        let mut input_string = String::new();
 
         io::stdin().read_line(&mut input_string).unwrap();
+
+        let exiting_gracefully = input_string.trim() == "exit";
+        if exiting_gracefully {
+            println!("[EXITING]");
+            break;
+        };
 
         let command_match = capture_command_arguments(&input_string);
 
