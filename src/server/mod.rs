@@ -1,4 +1,4 @@
 mod routes;
-mod server;
+mod startup;
 
-pub use server::start_server;
+pub use startup::start_server;
