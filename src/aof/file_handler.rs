@@ -28,12 +28,12 @@ impl FileHandler {
     pub fn parse_actions(&mut self) -> Vec<Vec<String>> {
         let file_string = self.read_file();
 
-        let split_actions: Vec<&str> = file_string.split("^").collect();
+        let split_actions: Vec<&str> = file_string.split('^').collect();
 
         split_actions
             .iter()
             .map(|x| {
-                let split: Vec<&str> = x.split("|").collect();
+                let split: Vec<&str> = x.split('|').collect();
                 split.iter().map(|x| x.to_string()).collect::<Vec<String>>()
             })
             .collect()
