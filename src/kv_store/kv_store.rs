@@ -57,15 +57,15 @@ impl KeyValueStore {
             match command {
                 "set" => {
                     let (key, value) = (&action[1], &action[2]);
-                    println!("Setting key {}", key);
+                    println!("[INFO] attempting to set key {}", key);
                     self.set(key.to_string(), value.to_owned(), Some(false));
                 }
                 "delete" => {
                     let key = &action[1];
-                    println!("Deleting key {}", key);
+                    println!("[INFO] attempting to delete key {}", key);
                     self.delete(key, Some(false));
                 }
-                _ => println!("How did we get here?"),
+                command => println!("[ERROR] invalid command {}", command),
             }
         }
     }

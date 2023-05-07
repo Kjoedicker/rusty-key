@@ -10,7 +10,7 @@ fn main() {
 
     let server = || match server::start_server() {
         Ok(()) => {
-            println!("Server exiting gracefully")
+            println!("[INFO] Server exiting gracefully")
         }
         Err(err) => {
             panic!("[ERROR] starting server {}", err)
