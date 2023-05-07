@@ -28,7 +28,7 @@ impl FileHandler {
     pub fn parse_actions(&mut self) -> Vec<Vec<String>> {
         let file_string = self.read_file();
 
-        let split_actions: Vec<&str> = file_string.split('^').collect();
+        let split_actions: Vec<&str> = file_string.split('\n').collect();
 
         split_actions
             .iter()

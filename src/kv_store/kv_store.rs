@@ -25,7 +25,7 @@ impl KeyValueStore {
 
         if let Some(true) = tracking {
             self.aof
-                .append_file(format!("^set|{}|{}", key, value).as_bytes());
+                .append_file(format!("set|{}|{}\n", key, value).as_bytes());
         }
 
         result
@@ -39,7 +39,7 @@ impl KeyValueStore {
         match self.store.remove(key) {
             Some(_) => {
                 if let Some(true) = tracking {
-                    self.aof.append_file(format!("^delete|{}", key).as_bytes());
+                    self.aof.append_file(format!("delete|{}\n", key).as_bytes());
                 }
 
                 Some(key.to_string())
