@@ -32,7 +32,7 @@ fn process_captured_arguments(captured_arguments: Captures) {
             let key = captured_arguments.name("key").unwrap().as_str();
 
             match teller.get(key) {
-                Some(value) => println!("{value}"),
+                Some(value) => println!("[SUCCESS] {value}"),
                 None => println!("[FAILURE] Key does not exist: {}", key),
             };
         }
@@ -47,7 +47,7 @@ fn process_captured_arguments(captured_arguments: Captures) {
             };
         }
         _ => {
-            println!("[INFO] {} is not a valid command", matched_command.as_str())
+            println!("[FAILURE] {} is not a valid command", matched_command.as_str())
         }
     }
 }
@@ -73,7 +73,7 @@ pub fn start() {
                 process_captured_arguments(captures);
             }
             None => {
-                println!("[INFO] invalid command")
+                println!("[FAILURE] invalid command")
             }
         }
     }
