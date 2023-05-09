@@ -48,7 +48,7 @@ impl KeyValueStore {
         }
     }
 
-    pub fn process_actions(&mut self) {
+    pub fn sync_aof(&mut self) {
         let actions = self.aof.parse_actions();
 
         for action in actions.iter() {
