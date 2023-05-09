@@ -5,7 +5,7 @@ use actix_web::{App, HttpServer};
 
 pub fn startup_tasks() {
     let mut store = KEY_VALUE_STORE.lock().unwrap();
-    store.process_actions();
+    store.sync_aof();
 }
 
 #[actix_web::main]
