@@ -1,14 +1,22 @@
 mod aof;
-mod cli;
 mod kv_store;
 mod server;
 
-use threadpool::ThreadPool;
+use clap::Parser;
+
+/// A simple key/value store
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Port to start the server on
+    #[arg(short, long, default_value_t = 8081)]
+    port: u16,
+}
 
 fn main() {
-    let pool = ThreadPool::new(5);
+    let args = Args::parse();
 
-    let server = || match server::start_server() {
+    match server::start_server(args.port) {
         Ok(()) => {
             println!("[INFO] Server exiting gracefully")
         }
@@ -16,12 +24,4 @@ fn main() {
             panic!("[ERROR] starting server {}", err)
         }
     };
-
-    let cli = || {
-        cli::start();
-    };
-
-    pool.execute(server);
-    pool.execute(cli);
-    pool.join();
 }
