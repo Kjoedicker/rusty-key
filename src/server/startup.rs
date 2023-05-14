@@ -9,8 +9,10 @@ pub fn startup_tasks() {
 }
 
 #[actix_web::main]
-pub async fn start_server() -> std::io::Result<()> {
+pub async fn start_server(port: u16) -> std::io::Result<()> {
     startup_tasks();
+
+    println!("[STARTUP] server on port: {}", port);
 
     HttpServer::new(|| {
         App::new()
@@ -18,7 +20,7 @@ pub async fn start_server() -> std::io::Result<()> {
             .service(set_key)
             .service(delete_key)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("127.0.0.1", port))?
     .run()
     .await
 }
