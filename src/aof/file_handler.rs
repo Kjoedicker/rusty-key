@@ -32,9 +32,14 @@ impl FileHandler {
 
         split_actions
             .iter()
-            .map(|x| {
+            .filter_map(|x| {
                 let split: Vec<&str> = x.split('|').collect();
-                split.iter().map(|x| x.to_string()).collect::<Vec<String>>()
+                let vector = split.iter().map(|x| x.to_string()).collect::<Vec<String>>();
+
+                // When a newline character sneaks in 
+                // this scenario becomes possible
+                let is_not_empty = vector.len() > 1;
+                if is_not_empty { Some(vector) } else { None }
             })
             .collect()
     }
